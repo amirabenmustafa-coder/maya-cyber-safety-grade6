@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#122b49">
+  <title>Maya and the Mystery Game Message | Grade 6 Cyber Safety</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #152a43;
+      --muted: #52657a;
+      --paper: #fffdf8;
+      --blue: #145b83;
+      --teal: #087f79;
+      --gold: #f2bd52;
+      --line: #dce5ea;
+      --soft: #eff6f5;
+      font-family: "Aptos", "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(circle at 15% 12%, #d9eee8 0, transparent 30rem),
+                  linear-gradient(145deg, #f4f7f4, #eef3f8 55%, #f8f0df);
+    }
+    button { font: inherit; }
+    .book { width: min(960px, calc(100% - 28px)); margin: 26px auto; }
+    .topbar, .bottombar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      color: white; background: var(--ink); padding: 14px 18px;
+    }
+    .topbar { border-radius: 18px 18px 0 0; }
+    .brand { font-weight: 800; letter-spacing: .02em; }
+    .level { color: #d7e5ef; font-size: .9rem; }
+    .reader {
+      min-height: 640px; padding: clamp(18px, 4vw, 42px);
+      background: var(--paper); box-shadow: 0 22px 60px #122b491a;
+    }
+    .cover, .story-page { display: none; animation: arrive .25s ease-out; }
+    .cover.active, .story-page.active { display: block; }
+    @keyframes arrive { from { opacity: .4; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+    .cover { text-align: center; max-width: 760px; margin: auto; }
+    .eyebrow { color: var(--teal); font-weight: 800; text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; }
+    h1 { max-width: 720px; margin: 10px auto 12px; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.04; }
+    h2 { margin: 0 0 10px; font-size: clamp(1.6rem, 3vw, 2.15rem); }
+    .subtitle { color: var(--muted); font-size: 1.12rem; }
+    .art { display: block; width: min(100%, 620px); aspect-ratio: 1; object-fit: cover; margin: 22px auto; border-radius: 18px; background: #edf1ee; }
+    .cover .art { width: min(100%, 590px); }
+    .story-page { max-width: 800px; margin: auto; }
+    .story-page .art { width: min(100%, 570px); }
+    .story-text { max-width: 720px; margin: 20px auto; color: #253d53; font-size: clamp(1.08rem, 2.1vw, 1.28rem); line-height: 1.75; }
+    .quiz { max-width: 720px; margin: 26px auto 0; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--soft); }
+    .quiz h3 { margin: 0 0 14px; font-size: 1.15rem; }
+    .answers { display: grid; gap: 10px; }
+    .answer {
+      width: 100%; padding: 12px 14px; text-align: left; color: var(--ink); cursor: pointer;
+      border: 1px solid #c8d6dc; border-radius: 10px; background: white;
+    }
+    .answer:hover, .answer:focus-visible { border-color: var(--teal); outline: 3px solid #087f7924; }
+    .answer.correct { border-color: #14805b; background: #e2f5e9; }
+    .answer.incorrect { border-color: #bd5d48; background: #fff0eb; }
+    .feedback { min-height: 1.5em; margin: 12px 0 0; font-weight: 700; }
+    .feedback.good { color: #117247; }
+    .feedback.try { color: #9a4937; }
+    .controls, .page-dots { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .controls { padding: 14px 16px; background: #f7f9fa; border-top: 1px solid var(--line); }
+    .bottombar { border-radius: 0 0 18px 18px; }
+    .nav-button, .tool-button, .start-button {
+      min-height: 42px; padding: 9px 15px; border: 0; border-radius: 10px; font-weight: 750; cursor: pointer;
+    }
+    .nav-button, .tool-button { color: white; background: var(--blue); }
+    .nav-button:disabled { opacity: .42; cursor: not-allowed; }
+    .tool-button { color: var(--ink); background: #e5edf1; }
+    .start-button { color: #13253a; background: var(--gold); margin-top: 2px; }
+    .status { min-width: 94px; text-align: center; color: var(--muted); font-weight: 700; }
+    .score { font-size: .94rem; color: var(--muted); }
+    .page-dots { gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 100%; background: #c6d2d8; }
+    .dot.active { background: var(--teal); transform: scale(1.18); }
+    .lesson { max-width: 720px; margin: 25px auto 0; padding: 14px 17px; border-left: 4px solid var(--gold); background: #fff7e7; color: #40546a; line-height: 1.55; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 600px) {
+      .book { width: 100%; margin: 0; }
+      .topbar, .bottombar { border-radius: 0; }
+      .reader { min-height: 0; padding: 22px 16px; }
+      .quiz { padding: 16px; }
+    }
+    @media print {
+      body { background: white; }
+      .book { width: 100%; margin: 0; }
+      .topbar, .controls, .bottombar, .start-button { display: none !important; }
+      .reader { padding: 0; box-shadow: none; }
+      .cover, .story-page { display: block !important; page-break-after: always; break-after: page; padding: 16mm 8mm; }
+      .art { width: 130mm !important; max-height: 130mm; margin: 8mm auto; }
+      .story-text { font-size: 14pt; }
+      .quiz { break-inside: avoid; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <main class="book" aria-label="Interactive cybersecurity storybook">
+    <header class="topbar">
+      <div class="brand">Edulixa Storybook</div>
+      <div class="level">Cyber Safety · Grade 6</div>
+    </header>
+    <div class="reader" id="reader" aria-live="polite">
+      <section class="cover active" data-page="0" aria-labelledby="book-title">
+        <div class="eyebrow">A choose-the-safe-action story</div>
+        <h1 id="book-title">Maya and the Mystery Game Message</h1>
+        <p class="subtitle">A short story about links, passwords, and asking for help.</p>
+        <img class="art" src="cover.png" alt="Maya at her laptop, pausing when a game message appears">
+        <button class="start-button" type="button" onclick="goTo(1)">Start reading</button>
+      </section>
+
+      <section class="story-page" data-page="1" aria-labelledby="page-title-1">
+        <div class="eyebrow">Page 1 · The tempting message</div>
+        <h2 id="page-title-1">A tempting message</h2>
+        <img class="art" src="page-1-message.png" alt="Maya sees a gift message while opening her game">
+        <p class="story-text">After school, Maya opens her favourite game. A message pops up: “You’ve won 1,000 free coins! Claim them now!” Maya is excited, but she notices that she doesn’t recognize the sender.</p>
+        <div class="quiz" data-answer="0">
+          <h3>What does the message promise?</h3>
+          <div class="answers"><button class="answer">A. Free game coins</button><button class="answer">B. A new laptop</button><button class="answer">C. Extra homework</button></div>
+          <p class="feedback" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="story-page" data-page="2" aria-labelledby="page-title-2">
+        <div class="eyebrow">Page 2 · Something feels wrong</div>
+        <h2 id="page-title-2">Something feels wrong</h2>
+        <img class="art" src="page-2-warning-signs.png" alt="Maya and Leo notice warning signs in a suspicious game message">
+        <p class="story-text">The message says Maya must hurry and enter her username and password on a strange website. Her friend Leo says, “Let’s check with an adult first.” Maya remembers that real prizes shouldn’t require her password.</p>
+        <div class="quiz" data-answer="0">
+          <h3>What is a warning sign?</h3>
+          <div class="answers"><button class="answer">A. The message asks her to hurry and share her password</button><button class="answer">B. The game has colourful characters</button><button class="answer">C. Leo is sitting beside her</button></div>
+          <p class="feedback" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="story-page" data-page="3" aria-labelledby="page-title-3">
+        <div class="eyebrow">Page 3 · Maya makes a safe choice</div>
+        <h2 id="page-title-3">Maya makes a safe choice</h2>
+        <img class="art" src="page-3-tell-an-adult.png" alt="Maya closes the message and talks with her mother">
+        <p class="story-text">Maya doesn’t click the link or reply. She closes the message and tells her mother what happened. Together, they check the game’s official website and find no such prize.</p>
+        <div class="quiz" data-answer="2">
+          <h3>What should Maya do with the suspicious link?</h3>
+          <div class="answers"><button class="answer">A. Open it quickly</button><button class="answer">B. Send it to all her friends</button><button class="answer">C. Leave it unopened and ask a trusted adult</button></div>
+          <p class="feedback" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="story-page" data-page="4" aria-labelledby="page-title-4">
+        <div class="eyebrow">Page 4 · Protecting her account</div>
+        <h2 id="page-title-4">Protecting her account</h2>
+        <img class="art" src="page-4-secure-account.png" alt="Maya and her mother review account security settings">
+        <p class="story-text">Maya and her mother review her account settings. Maya learns to use a long, unique password and never share it, even with friends. With her mother’s help, she turns on an extra sign-in check.</p>
+        <div class="quiz" data-answer="0">
+          <h3>Why is a unique password safer?</h3>
+          <div class="answers"><button class="answer">A. It helps protect her account if another password is exposed</button><button class="answer">B. It makes the game give her free coins</button><button class="answer">C. It lets her skip every sign-in</button></div>
+          <p class="feedback" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="story-page" data-page="5" aria-labelledby="page-title-5">
+        <div class="eyebrow">Page 5 · Maya helps Leo</div>
+        <h2 id="page-title-5">Maya helps Leo</h2>
+        <img class="art" src="page-5-help-a-friend.png" alt="Maya and Leo report a suspicious message to their teacher">
+        <p class="story-text">The next day, Leo receives a similar message. Maya tells him to pause, avoid the link, and show a trusted adult. They report the message through the game’s safety tools. Maya feels proud: one careful choice helped protect both friends.</p>
+        <div class="quiz" data-answer="1">
+          <h3>What is the story’s main lesson?</h3>
+          <div class="answers"><button class="answer">A. Every online message is true</button><button class="answer">B. Pause, don’t share private information, and ask a trusted adult</button><button class="answer">C. Share suspicious links so everyone can inspect them</button></div>
+          <p class="feedback" aria-live="polite"></p>
+        </div>
+        <p class="lesson"><strong>Remember:</strong> Pause. Don’t click or share private information. Tell a trusted adult.</p>
+      </section>
+    </div>
+    <nav class="controls" aria-label="Book controls">
+      <button class="nav-button" id="previous" type="button">‹ Previous</button>
+      <span class="status" id="status">Cover</span>
+      <button class="nav-button" id="next" type="button">Next ›</button>
+    </nav>
+    <div class="controls">
+      <div class="page-dots" id="dots" aria-label="Page progress"></div>
+      <button class="tool-button" id="read-aloud" type="button">🔊 Read this page</button>
+      <button class="tool-button" id="print-book" type="button">Print / Save as PDF</button>
+      <button class="tool-button" id="reset-quiz" type="button">Reset quiz</button>
+      <span class="score" id="score" aria-live="polite">0 / 5 correct</span>
+    </div>
+    <footer class="bottombar"><span>Think before you click.</span><span>Pause · Protect · Tell</span></footer>
+  </main>
+  <script>
+    const sections = [...document.querySelectorAll('[data-page]')];
+    const total = sections.length - 1;
+    let current = 0;
+    const answersGiven = new Map();
+    const status = document.getElementById('status');
+    const previous = document.getElementById('previous');
+    const next = document.getElementById('next');
+    const dots = document.getElementById('dots');
+    const score = document.getElementById('score');
+
+    function renderDots() {
+      dots.replaceChildren();
+      for (let i = 0; i <= total; i++) {
+        const dot = document.createElement('span');
+        dot.className = `dot${i === current ? ' active' : ''}`;
+        dot.setAttribute('aria-hidden', 'true');
+        dots.append(dot);
+      }
+    }
+    function updateScore() {
+      const correct = [...answersGiven.values()].filter(Boolean).length;
+      score.textContent = `${correct} / 5 correct`;
+    }
+    function goTo(page) {
+      current = Math.max(0, Math.min(total, page));
+      sections.forEach((section, index) => section.classList.toggle('active', index === current));
+      status.textContent = current === 0 ? 'Cover' : `Page ${current} / ${total}`;
+      previous.disabled = current === 0;
+      next.disabled = current === total;
+      renderDots();
+      document.getElementById('reader').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    previous.addEventListener('click', () => goTo(current - 1));
+    next.addEventListener('click', () => goTo(current + 1));
+    document.querySelectorAll('.quiz').forEach((quiz, pageIndex) => {
+      const answerIndex = Number(quiz.dataset.answer);
+      const buttons = [...quiz.querySelectorAll('.answer')];
+      const feedback = quiz.querySelector('.feedback');
+      buttons.forEach((button, choiceIndex) => button.addEventListener('click', () => {
+        buttons.forEach((item, index) => {
+          item.classList.toggle('correct', index === answerIndex);
+          item.classList.toggle('incorrect', index === choiceIndex && choiceIndex !== answerIndex);
+          item.disabled = true;
+        });
+        const correct = choiceIndex === answerIndex;
+        answersGiven.set(pageIndex + 1, correct);
+        feedback.textContent = correct ? 'Correct! Great thinking.' : 'Not quite. The highlighted answer is the safest choice.';
+        feedback.className = `feedback ${correct ? 'good' : 'try'}`;
+        updateScore();
+      }));
+    });
+    document.getElementById('read-aloud').addEventListener('click', () => {
+      if (!('speechSynthesis' in window)) {
+        alert('Read aloud is not available in this browser.');
+        return;
+      }
+      speechSynthesis.cancel();
+      const section = sections[current];
+      const text = [...section.querySelectorAll('h1, h2, .story-text, .quiz h3, .answer, .lesson')]
+        .map(element => element.textContent).join('. ');
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      speechSynthesis.speak(utterance);
+    });
+    document.getElementById('print-book').addEventListener('click', () => window.print());
+    document.getElementById('reset-quiz').addEventListener('click', () => {
+      document.querySelectorAll('.quiz').forEach(quiz => {
+        quiz.querySelectorAll('.answer').forEach(button => {
+          button.disabled = false;
+          button.classList.remove('correct', 'incorrect');
+        });
+        const feedback = quiz.querySelector('.feedback');
+        feedback.textContent = '';
+        feedback.className = 'feedback';
+      });
+      answersGiven.clear();
+      updateScore();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'ArrowRight') goTo(current + 1);
+      if (event.key === 'ArrowLeft') goTo(current - 1);
+      if (event.key === 'Home') goTo(0);
+      if (event.key === 'End') goTo(total);
+    });
+    goTo(0);
+  </script>
+</body>
+</html>
